@@ -1,6 +1,5 @@
-project: rnshah9/wla-dx
+project: wla-dx
 target: wla-z80
 
 cmds:
-  - cmd: /wla-dx/build/binaries/wla-z80 @@
-    filepath: /test.s
+  - cmd: /install/bin/wla-z80 @@

@@ -1,9 +1,15 @@
-FROM --platform=linux/amd64 ubuntu:20.04
+FROM --platform=linux/amd64 ubuntu:20.04 as builder
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y make cmake
 
-ADD . /wla-dx
+COPY . /wla-dx
 WORKDIR /wla-dx/build
-RUN cmake ..
+RUN cmake .. -DCMAKE_INSTALL_PREFIX=/install
 RUN make -j8
+RUN make install
+
+FROM ubuntu:20.04 as package
+
+COPY --from=builder /install /install
+
