@@ -1,0 +1,17 @@
+project: wla-dx
+target: wla-z80
+
+# File-input (CLI) target: feed the fuzz bytes as a Z80 assembly source file to wla-z80 — the WLA-DX
+# Z80 macro assembler. The whole front end (scanner, preprocessor, macro expansion, parser,
+# phase_1..phase_4, Z80 instruction encoding) runs on the input. Not libFuzzer: the natural fuzz surface
+# is the assembler on a source file. `-o <out>` fixes the output to a writable temp path so the assembler
+# never tries to write next to the (read-only) input; @@ is the input-file placeholder.
+# Ported from the old integration's file-input target (old path /wla-dx/build/binaries/wla-z80 on a .s file).
+cmds:
+  - cmd: /mayhem/wla-z80 -o /tmp/wla-z80-out.o @@
+    # wla-* assemblers are arena-by-exit (allocate global/parse buffers, exit without freeing on many
+    # paths), so LeakSanitizer would flag benign "leaks" on a large fraction of inputs. build.sh bakes
+    # detect_leaks=0 into the binary; this env documents it and covers any invocation that ignores the
+    # baked default. ASan's overflow/UAF checks and all of UBSan remain on and halting.
+testsuite:
+  - file:///mayhem/mayhem/testsuite
