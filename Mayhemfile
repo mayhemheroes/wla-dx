@@ -1,0 +1,5 @@
+project: wla-dx
+target: wla-z80
+
+cmds:
+  - cmd: /install/bin/wla-z80 @@
