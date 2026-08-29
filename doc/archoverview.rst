@@ -42,7 +42,7 @@ WLA has four separate phases:
 
    - Again we read in TMP.
    - Now we check that if there is a reference to a calculation, and that
-     calculation has been succesfully calculated, then we can replace the
+     calculation has been successfully calculated, then we can replace the
      reference with the result.
    - This phase writes out object and library files, i.e., transforms TMP
      to final output files (this write out could actually be ``pass_5``)...
